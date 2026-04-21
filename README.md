@@ -1,3 +1,4 @@
+A backend system for a luxury interior design website, supporting contact form submissions, admin dashboard, and enquiry management.
 # Luxe Interior — Backend
 
 Node.js + Express + SQLite backend for the Luxe Interior Studio website.
