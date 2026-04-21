@@ -1,0 +1,2 @@
+luxe@admin2026
+http:localhost3000admin

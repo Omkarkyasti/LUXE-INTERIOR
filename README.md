@@ -1,64 +1,100 @@
-# LUXE-INTERIOR
-# 🏛️ Luxe Interior Studio
+# Luxe Interior — Backend
 
-A fully responsive, multi-page luxury interior design studio website with a dark,
-gold-accented aesthetic. Built with pure HTML, Tailwind CSS, and vanilla JavaScript
-— no frameworks, no build tools, just clean and fast frontend code.
+Node.js + Express + SQLite backend for the Luxe Interior Studio website.
 
-## 📄 Pages
+---
 
-- **Home** – Hero section, services overview, portfolio preview & CTA
-- **Projects** – Filterable gallery (All / Residential / Commercial / 3D Visuals)
-- **Services** – Service cards, process steps & pricing packages
-- **About** – Studio story, stats, team section & testimonial
-- **Contact** – Animated floating-label form with success state
+## 📁 Project Structure
 
-## ✨ Features
+```
+luxe-backend/
+├── server.js          ← Main Express server
+├── package.json
+├── luxe.db            ← SQLite database (auto-created on first run)
+└── public/
+    └── admin/
+        └── index.html ← Admin dashboard UI
+```
 
-- 🎨 Dark luxury theme with gold (#D4AF37) accent system
-- 🔍 Live project filtering with staggered animations
-- 📱 Fully responsive with mobile hamburger menu
-- 🖼️ Hover overlays on project cards with smooth zoom
-- 💫 CSS keyframe animations and scroll-aware transitions
-- 🗂️ Multi-page architecture with consistent navbar & footer
-- 📬 Contact form with simulated success state
-- 💰 Tiered pricing cards (Essential / Premium / Signature)
+---
 
-## 🛠️ Tech Stack
+## 🚀 Setup & Run
 
-| Technology     | Usage                        |
-|----------------|------------------------------|
-| HTML5          | Page structure & semantics   |
-| Tailwind CSS   | Utility-first styling (CDN)  |
-| Vanilla JS     | Filtering, mobile menu, form |
-| Google Fonts   | Cormorant Garamond display   |
-| Unsplash API   | High-quality stock imagery   |
+### 1. Install dependencies
+```bash
+npm install
+```
 
-## 🚀 Getting Started
+### 2. Start the server
+```bash
+# Production
+npm start
 
-No installation needed. Just clone and open in a browser:
+# Development (auto-restart on changes)
+npm run dev
+```
 
-git clone https://github.com/your-username/luxe-interior-studio.git
-cd luxe-interior-studio
-open index.html
+Server runs at: **http://localhost:3000**
 
-## 📁 File Structure
+---
 
-luxe-interior-studio/
-├── index.html       # Homepage
-├── projects.html    # Portfolio with filter tabs
-├── services.html    # Services & pricing
-├── about.html       # Studio story & team
-├── contact.html     # Contact form
-├── style.css        # Base styles
-├── script.js        # Utility scripts
-└── assets/          # Local images (bathroom, mirror, sofa, etc.)
+## 🔐 Admin Dashboard
 
-## 📸 Preview
+Visit: **http://localhost:3000/admin**
 
-Dark, gold-themed luxury interior studio website with cinematic hero sections,
-animated project filtering, and a fully responsive multi-page layout.
+Default password: `luxe@admin2026`
 
-## 📝 License
+> ⚠️ Change the password before going live!
+> Set via environment variable: `ADMIN_PASSWORD=yourpassword node server.js`
 
-MIT — free to use, modify, and distribute.
+---
+
+## 📡 API Endpoints
+
+### Public
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/contact` | Submit contact form |
+
+**Contact form body:**
+```json
+{ "name": "...", "email": "...", "message": "..." }
+```
+
+### Admin (requires `x-admin-token` header)
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/admin/login` | Login → returns token |
+| POST | `/api/admin/logout` | Logout |
+| GET | `/api/admin/enquiries` | List enquiries (filter, search, paginate) |
+| PATCH | `/api/admin/enquiries/:id/status` | Update status |
+| DELETE | `/api/admin/enquiries/:id` | Delete enquiry |
+| GET | `/api/admin/stats` | Dashboard stats + 7-day trend |
+
+---
+
+## 🌐 Connect Your Frontend
+
+In your `contact.html`, replace the Formspree action with:
+
+```javascript
+const res = await fetch('http://localhost:3000/api/contact', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name, email, message })
+});
+const data = await res.json();
+if (data.success) { /* show success */ }
+```
+
+---
+
+## 🚢 Deployment Options
+
+| Platform | Steps |
+|----------|-------|
+| **Railway** | Connect GitHub repo → Deploy |
+| **Render** | New Web Service → Free tier available |
+| **VPS** | `npm install` → use PM2 to keep it running |
+
+SQLite works great for small-to-medium sites. For high traffic, swap to PostgreSQL.
